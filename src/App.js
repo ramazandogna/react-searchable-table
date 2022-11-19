@@ -12,9 +12,9 @@ function App() {
          age: '23',
       },
       {
-         name: 'Emirhan',
+         name: 'Emrullah',
          surName: 'Yurt',
-         email: 'emirhan31@gmail.com',
+         email: 'emrullah3131@gmail.com',
          age: '22',
       },
       {
