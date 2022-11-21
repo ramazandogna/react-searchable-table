@@ -1,8 +1,14 @@
+import { FaSort, FaSortDown, FaSortUp, FaSortup } from 'react-icons/fa';
 import React, { useState } from 'react';
+import { useMediaQueries, useMediaQuery } from '@react-hook/media-query';
+
+import TableMobile from './table-mobile';
 
 function Table({ head, body, searchable }) {
    const [search, setSearch] = useState('');
    const [sorting, setSorting] = useState({});
+
+   const isMobile = useMediaQuery('max-width: 600px');
 
    const filteredData = body.filter((items) =>
       items
@@ -14,10 +20,17 @@ function Table({ head, body, searchable }) {
          )
          .sort((a, b) => {
             if (sorting.orderBy === 'asc') {
-               return a[sorting.key].localCompare(b[sorting.key]);
+               a[sorting.key].localeCompare(b[sorting.key]);
+            }
+            if (sorting.orderBy === 'desc') {
+               b[sorting.key].localeCompare(a[sorting.key]);
             }
          })
    );
+
+   if (isMobile) {
+      return <TableMobile head={head} />;
+   }
 
    return (
       <>
@@ -50,29 +63,39 @@ function Table({ head, body, searchable }) {
                            className="text-left text-sm font-semibold text-gray-500 p-3 border-b "
                            key={key}
                         >
-                           {h.name}
-                           {h.sortable && (
-                              <button
-                                 onClick={() => {
-                                    if (sorting?.key === key) {
-                                       setSorting({
-                                          key,
-                                          orderBy:
-                                             sorting.orderBy === 'asc'
-                                                ? 'desc'
-                                                : 'asc',
-                                       });
-                                    } else {
-                                       setSorting({
-                                          key,
-                                          orderBy: 'asc',
-                                       });
-                                    }
-                                 }}
-                              >
-                                 Sortable
-                              </button>
-                           )}
+                           <div className="inline-flex items-center gap-x-2">
+                              {h.name}
+                              {h.sortable && (
+                                 <button
+                                    onClick={() => {
+                                       if (sorting?.key === key) {
+                                          setSorting({
+                                             key,
+                                             orderBy:
+                                                sorting?.orderBy === 'asc'
+                                                   ? 'desc'
+                                                   : 'asc',
+                                          });
+                                       } else {
+                                          setSorting({
+                                             key,
+                                             orderBy: 'asc',
+                                          });
+                                       }
+                                    }}
+                                 >
+                                    {sorting?.key === key &&
+                                       (sorting.orderBy === 'asc' ? (
+                                          <FaSortDown size={14} />
+                                       ) : (
+                                          <FaSortUp size={14} />
+                                       ))}
+                                    {sorting?.key !== key && (
+                                       <FaSort size={14} />
+                                    )}
+                                 </button>
+                              )}
+                           </div>
                         </th>
                      ))}
                   </tr>

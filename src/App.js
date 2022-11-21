@@ -42,7 +42,7 @@ function App() {
                { name: 'İşlemler', width: '200px' },
             ]}
             body={users.map((user) => [
-               user.name,
+               `${user.name} $${user.surName} `,
                user.email,
                user.age,
                [
