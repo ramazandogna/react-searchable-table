@@ -5,12 +5,18 @@ function Table({ head, body, searchable }) {
    const [sorting, setSorting] = useState({});
 
    const filteredData = body.filter((items) =>
-      items.some((item) =>
-         item
-            .toString()
-            .toLocaleLowerCase('TR')
-            .includes(search.toLocaleLowerCase('TR'))
-      )
+      items
+         .some((item) =>
+            item
+               .toString()
+               .toLocaleLowerCase('TR')
+               .includes(search.toLocaleLowerCase('TR'))
+         )
+         .sort((a, b) => {
+            if (sorting.orderBy === 'asc') {
+               return a[sorting.key].localCompare(b[sorting.key]);
+            }
+         })
    );
 
    return (
@@ -19,12 +25,18 @@ function Table({ head, body, searchable }) {
          {searchable && (
             <div className="mb-4">
                <input
+                  onClick={setSorting({})}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   type="text"
                   placeholder="Tabloda Ara"
                   className="h-10 border outline-none focus:border-black rounded text-sm px-4 w-full border-gray-300"
                />
+               {sorting && (
+                  <button className="h-10 rounded whitespace-nowrap border border-red-500 text-red-500 text-sm px-4">
+                     Sıralama İptal
+                  </button>
+               )}
             </div>
          )}
          {search}
