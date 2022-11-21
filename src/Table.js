@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 
 function Table({ head, body, searchable }) {
    const [search, setSearch] = useState('');
+   const [sorting, setSorting] = useState({});
 
    const filteredData = body.filter((items) =>
-      items.some((item) => item.toString().toLocaleLowerCase('TR').includes(search.toLocaleLowerCase('TR')))
+      items.some((item) =>
+         item
+            .toString()
+            .toLocaleLowerCase('TR')
+            .includes(search.toLocaleLowerCase('TR'))
+      )
    );
 
    return (
       <>
-         <pre>{JSON.stringify(filteredData, null, 2)}</pre>
+         <pre>{JSON.stringify(sorting, null, 2)}</pre>
          {searchable && (
             <div className="mb-4">
                <input
@@ -27,8 +33,34 @@ function Table({ head, body, searchable }) {
                <thead>
                   <tr>
                      {head.map((h, key) => (
-                        <th className="text-left text-sm font-semibold text-gray-500 p-3 border-b " key={key}>
-                           {h}
+                        <th
+                           width={h.width}
+                           className="text-left text-sm font-semibold text-gray-500 p-3 border-b "
+                           key={key}
+                        >
+                           {h.name}
+                           {h.sortable && (
+                              <button
+                                 onClick={() => {
+                                    if (sorting?.key === key) {
+                                       setSorting({
+                                          key,
+                                          orderBy:
+                                             sorting.orderBy === 'asc'
+                                                ? 'desc'
+                                                : 'asc',
+                                       });
+                                    } else {
+                                       setSorting({
+                                          key,
+                                          orderBy: 'asc',
+                                       });
+                                    }
+                                 }}
+                              >
+                                 Sortable
+                              </button>
+                           )}
                         </th>
                      ))}
                   </tr>
@@ -37,8 +69,15 @@ function Table({ head, body, searchable }) {
                   {filteredData.map((items, key) => (
                      <tr className="group" key={key}>
                         {items.map((item, key) => (
-                           <td className="p-3 text-sm group-hover:bg-blue-50 group-hover:text-blue-600" key={key}>
-                              {item}
+                           <td
+                              className="p-3 text-sm group-hover:bg-blue-50 group-hover:text-blue-600"
+                              key={key}
+                           >
+                              {Array.isArray(item) ? (
+                                 <div className="flex gap-x-2">{item}</div>
+                              ) : (
+                                 item
+                              )}
                            </td>
                         ))}
                      </tr>

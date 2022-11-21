@@ -14,14 +14,20 @@ function App() {
       {
          name: 'Emrullah',
          surName: 'Yurt',
-         email: 'emrullah3131@gmail.com',
-         age: '22',
+         email: 'emrullahrze@gmail.com',
+         age: '19',
       },
       {
-         name: 'Volkang',
-         surName: 'Appo',
-         email: 'aleyaey@gmail.com',
-         age: '31',
+         name: 'Volkan',
+         surName: 'Van',
+         email: 'volkanvan24@gmail.com',
+         age: '20',
+      },
+      {
+         name: 'Neymar',
+         surName: 'De Souza',
+         email: 'neymar@gmail.com',
+         age: '26',
       },
    ];
 
@@ -29,8 +35,25 @@ function App() {
       <div className="p-4">
          <Table
             searchable={true}
-            head={['Ad', 'Soyad', 'Yaş']}
-            body={users.map((user) => [user.name, user.email, user.age])}
+            head={[
+               { name: 'Ad-Soyad', sortable: 'true' },
+               { name: 'E-posta' },
+               { name: 'Yaş', sortable: 'true' },
+               { name: 'İşlemler', width: '200px' },
+            ]}
+            body={users.map((user) => [
+               user.name,
+               user.email,
+               user.age,
+               [
+                  <button className="h-8 px-4 flex items-center rounded bg-blue-500 text-white">
+                     düzenle
+                  </button>,
+                  <button className="h-8 px-4 flex items-center rounded bg-red-400 text-white">
+                     sil
+                  </button>,
+               ],
+            ])}
          />
       </div>
    );
