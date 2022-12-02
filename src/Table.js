@@ -1,6 +1,6 @@
 import { FaSort, FaSortDown, FaSortUp, FaSortup } from 'react-icons/fa';
 import React, { useState } from 'react';
-import { useMediaQueries, useMediaQuery } from '@react-hook/media-query';
+import { useMediaQueries, useMediaQuery } from 'media-query-react';
 
 import TableMobile from './table-mobile';
 
