@@ -1,36 +1,47 @@
 import { FaSort, FaSortDown, FaSortUp, FaSortup } from 'react-icons/fa';
 import React, { useState } from 'react';
-import { useMediaQueries, useMediaQuery } from 'media-query-react';
 
-import TableMobile from './table-mobile';
+// import TableMobile from './table-mobile';
+
+// import { useMediaQuery } from 'react-responsive';
 
 function Table({ head, body, searchable }) {
    const [search, setSearch] = useState('');
    const [sorting, setSorting] = useState({});
 
-   const isMobile = useMediaQuery('max-width: 600px');
-
-   const filteredData = body.filter((items) =>
-      items
-         .some((item) =>
-            item
-               .toString()
-               .toLocaleLowerCase('TR')
-               .includes(search.toLocaleLowerCase('TR'))
+   const filteredData =
+      body &&
+      body
+         .filter((items) =>
+            items.some((item) =>
+               (item?.key || item?.props?.searchableText || item)
+                  .toString()
+                  .toLocaleLowerCase('TR')
+                  .includes(search.toLocaleLowerCase('TR'))
+            )
          )
          .sort((a, b) => {
-            if (sorting.orderBy === 'asc') {
-               a[sorting.key].localeCompare(b[sorting.key]);
+            if (sorting?.orderBy === 'asc') {
+               return (
+                  a[sorting.key]?.key ||
+                  a[sorting.key]?.props?.searchableText ||
+                  a[sorting.key]
+               )
+                  .toString()
+                  .localeCompare(
+                     b[sorting.key]?.key ||
+                        b[sorting.key]?.props?.searchableText ||
+                        b[sorting.key]
+                  );
             }
-            if (sorting.orderBy === 'desc') {
-               b[sorting.key].localeCompare(a[sorting.key]);
+            if (sorting?.orderBy === 'desc') {
+               return b[sorting.key].toString().localeCompare(a[sorting.key]);
             }
-         })
-   );
+         });
 
-   if (isMobile) {
-      return <TableMobile head={head} />;
-   }
+   // if (isMobile) {
+   //    return <TableMobile head={head} />;
+   // }
 
    return (
       <>
